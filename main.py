@@ -7,15 +7,15 @@ from scrapper.main import iniciar_interacao_com_chatbots
 def iniciar_treino():
     chave_api = ""
     usar_gpt = False
-    usar_grok = False 
+    usar_gemini = False 
     
     chave_api = chave_api_var.get()
     usar_gpt = gpt_var.get()
-    usar_grok = grok_var.get()
+    usar_gemini = gemini_var.get()
 
     print("🔑 Chave da API:", chave_api)
     print("✅ GPT Ativo:", usar_gpt)
-    print("✅ Grok Ativo:", usar_grok)
+    print("✅ Gemini Ativo:", usar_gemini)
 
     if not chave_api:
         print("⚠️ Por favor, informe a chave da API!")
@@ -26,7 +26,7 @@ def iniciar_treino():
         url="https://dev-esaude-frontend-dot-projetocaredev.uc.r.appspot.com/",
         chave_api=chave_api,
         usar_gpt=usar_gpt,
-        usar_grok=usar_grok
+        usar_gemini=usar_gemini
     )
 
 
@@ -43,10 +43,10 @@ Entry(app, textvariable=chave_api_var, width=50).pack()
 # --- Seleção de modelos ---
 Label(app, text="Modelos a utilizar:").pack(pady=5)
 gpt_var = BooleanVar(value=True)
-grok_var = BooleanVar(value=True)
+gemini_var = BooleanVar(value=True)
 
 Checkbutton(app, text="Utilizar GPT", variable=gpt_var).pack()
-Checkbutton(app, text="Utilizar Grok", variable=grok_var).pack()
+Checkbutton(app, text="Utilizar Gemini", variable=gemini_var).pack()
 
 # --- Botão de início ---
 Button(app, text="Iniciar Treino", command=iniciar_treino).pack(pady=20)

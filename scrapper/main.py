@@ -74,17 +74,17 @@ def obter_ultima_resposta_bot():
         print("❌ Erro ao capturar resposta do bot:", e)
         return None
 
-def gerar_resposta_chatgpt(prompt_usuario, chave_api, usar_gpt, usar_grok):
+def gerar_resposta_chatgpt(prompt_usuario, chave_api, usar_gpt, usar_gemini):
     try:
-        return factory_message(prompt_usuario=prompt_usuario,chave_api= chave_api, usar_gpt=usar_gpt, usar_grok=usar_grok)
+        return factory_message(prompt_usuario=prompt_usuario,chave_api= chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini)
     except Exception as e:
-        print("❌ Erro ao gerar resposta via Grok:", e)
+        print("❌ Erro ao gerar resposta via Gemini:", e)
         return "Erro ao processar resposta."
 
 def iniciar_interacao_com_chatbots(
         chave_api,
         usar_gpt,
-        usar_grok,
+        usar_gemini,
         url="https://dev-esaude-frontend-dot-projetocaredev.uc.r.appspot.com/"):
     try:
         driver.get(url)
@@ -102,8 +102,8 @@ def iniciar_interacao_com_chatbots(
                 print(f"🤖 DialogFlow respondeu: {nova_resposta_botA}")
                 ultima_resposta_botA = nova_resposta_botA
 
-                resposta_botB = gerar_resposta_chatgpt(chave_api=chave_api, usar_gpt=usar_gpt, usar_grok=usar_grok, prompt_usuario=nova_resposta_botA)
-                print(f"🤖 Grok respondeu: {resposta_botB}")
+                resposta_botB = gerar_resposta_chatgpt(chave_api=chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini, prompt_usuario=nova_resposta_botA)
+                print(f"🤖 Gemini respondeu: {resposta_botB}")
 
                 enviar_para_chatbot_dialogflow(resposta_botB)
 
