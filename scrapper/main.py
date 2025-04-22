@@ -1,24 +1,12 @@
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
+from webdriver_manager.chrome import ChromeDriverManager
 from models.grok import factory_message
-
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from openai import OpenAI
-
 
 def configurar_driver():
     service = Service(ChromeDriverManager().install())
@@ -74,9 +62,9 @@ def obter_ultima_resposta_bot():
         print("❌ Erro ao capturar resposta do bot:", e)
         return None
 
-def gerar_resposta_chatgpt(prompt_usuario, chave_api, usar_gpt, usar_gemini):
+def gerar_resposta_chatgpt(prompt_usuario, chave_api, usar_gpt, usar_gemini,  prompt):
     try:
-        return factory_message(prompt_usuario=prompt_usuario,chave_api= chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini)
+        return factory_message(prompt_usuario=prompt_usuario,chave_api= chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini, prompt=prompt,)
     except Exception as e:
         print("❌ Erro ao gerar resposta via Gemini:", e)
         return "Erro ao processar resposta."
@@ -85,6 +73,7 @@ def iniciar_interacao_com_chatbots(
         chave_api,
         usar_gpt,
         usar_gemini,
+        prompt,
         url="https://dev-esaude-frontend-dot-projetocaredev.uc.r.appspot.com/"):
     try:
         driver.get(url)
@@ -102,7 +91,7 @@ def iniciar_interacao_com_chatbots(
                 print(f"🤖 DialogFlow respondeu: {nova_resposta_botA}")
                 ultima_resposta_botA = nova_resposta_botA
 
-                resposta_botB = gerar_resposta_chatgpt(chave_api=chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini, prompt_usuario=nova_resposta_botA)
+                resposta_botB = gerar_resposta_chatgpt(chave_api=chave_api, usar_gpt=usar_gpt, usar_gemini=usar_gemini, prompt=prompt,  prompt_usuario=nova_resposta_botA)
                 print(f"🤖 Gemini respondeu: {resposta_botB}")
 
                 enviar_para_chatbot_dialogflow(resposta_botB)
