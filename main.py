@@ -1,37 +1,54 @@
 from tkinter import Tk, Label, Entry, Button, filedialog, StringVar, Checkbutton, Frame
+from scrapper.main import iniciar_interacao_com_chatbots
+from tkinter import Tk, Label, Entry, Button, Checkbutton, Frame, StringVar, BooleanVar
+from scrapper.main import iniciar_interacao_com_chatbots
 
-def select_folder() -> None:
-    folder = filedialog.askdirectory()
-    output_folder_var.set(folder)
 
-def teste():
-    print("Treino iniciado")
-    print("Pasta de saída:", output_folder_var.get())
+def iniciar_treino():
+    chave_api = ""
+    usar_gpt = False
+    usar_grok = False 
+    
+    chave_api = chave_api_var.get()
+    usar_gpt = gpt_var.get()
+    usar_grok = grok_var.get()
 
+    print("🔑 Chave da API:", chave_api)
+    print("✅ GPT Ativo:", usar_gpt)
+    print("✅ Grok Ativo:", usar_grok)
+
+    if not chave_api:
+        print("⚠️ Por favor, informe a chave da API!")
+        return
+
+    # Você pode ajustar aqui para alternar entre os modelos
+    iniciar_interacao_com_chatbots(
+        url="https://dev-esaude-frontend-dot-projetocaredev.uc.r.appspot.com/",
+        chave_api=chave_api,
+        usar_gpt=usar_gpt,
+        usar_grok=usar_grok
+    )
+
+
+# === GUI ===
 app = Tk()
 app.title("Treinador de Chatbot")
 app.geometry("600x400")
 
-# Pasta de saída
-Label(app, text="Pasta de Saída:").pack(pady=5)
-
-folder_frame = Frame(app)
-folder_frame.pack(pady=5)
-
-output_folder_var = StringVar()
-Entry(folder_frame, textvariable=output_folder_var, width=50).pack(side="left", padx=10)
-Button(folder_frame, text="Selecionar Pasta", command=select_folder).pack(side="left", padx=5)
-
-# Chave da API
+# --- Entrada da chave da API ---
 Label(app, text="Chave da API:").pack(pady=5)
-CHAVE_API = Entry(app, width=50).pack()
+chave_api_var = StringVar()
+Entry(app, textvariable=chave_api_var, width=50).pack()
 
-# Checkbuttons
+# --- Seleção de modelos ---
 Label(app, text="Modelos a utilizar:").pack(pady=5)
-grok = Checkbutton(app, text="Utilizando GPT").pack()
-gpt =Checkbutton(app, text="Utilizando Grok").pack()
+gpt_var = BooleanVar(value=True)
+grok_var = BooleanVar(value=True)
 
-# Botão para iniciar o treino
-Button(app, text="Iniciar Treino", command=teste).pack(pady=20)
+Checkbutton(app, text="Utilizar GPT", variable=gpt_var).pack()
+Checkbutton(app, text="Utilizar Grok", variable=grok_var).pack()
+
+# --- Botão de início ---
+Button(app, text="Iniciar Treino", command=iniciar_treino).pack(pady=20)
 
 app.mainloop()
